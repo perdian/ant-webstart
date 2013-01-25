@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+
+  <info organisation="de.perdian.ant" module="ant-webstart" status="integration" />
+
+  <configurations>
+    <conf name="default" />
+    <conf name="compile" extends="default" visibility="private" />
+    <conf name="test" extends="compile" visibility="private" />
+  </configurations>
+
+  <dependencies>
+
+    <dependency org="org.apache.ant" name="ant" rev="1.8.4" conf="compile->default" />
+
+    <dependency org="junit" name="junit" rev="4.8.2" conf="test->default" />
+    <dependency org="org.mockito" name="mockito-all" rev="1.8.5" conf="test->default" />
+    <dependency org="org.apache.ivy" name="ivy" rev="2.3.0-rc2" conf="test->default" />
+
+  </dependencies>
+
+</ivy-module>

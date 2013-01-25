@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<antlib xmlns:current="ant:current">
+
+  <typedef name="jnlp" classname="de.perdian.ant.webstart.JnlpTask" />
+
+</antlib>
