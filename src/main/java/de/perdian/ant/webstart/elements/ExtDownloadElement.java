@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class ExtDownloadElement implements ConfigurationElement {
 
@@ -25,7 +26,7 @@ public class ExtDownloadElement implements ConfigurationElement {
   private String myPart = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element extDownloadElement = ConfigurationHelper.appendElement(parentElement, "ext-download");
     ConfigurationHelper.appendAttributeIfNotNull(extDownloadElement, "ext-part", this.getExtpart());
     ConfigurationHelper.appendAttributeIfNotNull(extDownloadElement, "download", this.getDownload());

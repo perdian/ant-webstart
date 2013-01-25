@@ -18,8 +18,9 @@ package de.perdian.ant.webstart.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class JavaElement implements ConfigurationElement {
 
@@ -31,14 +32,14 @@ public class JavaElement implements ConfigurationElement {
   private List<PropertyElement> myProperty = new ArrayList<PropertyElement>();
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element javaElement = ConfigurationHelper.appendElement(parentElement, "java");
     ConfigurationHelper.appendAttributeIfNotNull(javaElement, "version", this.getVersion());
     ConfigurationHelper.appendAttributeIfNotNull(javaElement, "href", this.getHref());
     ConfigurationHelper.appendAttributeIfNotNull(javaElement, "java-vm-args", this.getJavavmargs());
     ConfigurationHelper.appendAttributeIfNotNull(javaElement, "initial-heap-size", this.getInitialheapsize());
     ConfigurationHelper.appendAttributeIfNotNull(javaElement, "max-heap-size", this.getMaxheapsize());
-    ConfigurationHelper.appendElements(project, javaElement, this.getProperty());
+    ConfigurationHelper.appendElements(task, javaElement, this.getProperty());
   }
 
   // ---------------------------------------------------------------------------

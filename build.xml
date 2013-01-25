@@ -35,6 +35,10 @@
   </target>
 
   <target name="test" depends="jar">
+    <ivy:cachepath pathid="project.compile.classpath.id" conf="compile" log="quiet" />
+    <mkdir dir="${build.target.directory}/webstart/libs/" />
+    <ivy:retrieve conf="*" pattern="${build.target.directory}/webstart/libs/[artifact].[ext]" />
+
     <taskdef uri="antlib:de.perdian.ant.webstart" classpath="${build.target.directory}/jar/${project.name}.jar" />
     <p:jnlp destfile="${build.target.directory}/webstart/test.jnlp">
       <information>
@@ -45,6 +49,10 @@
         <description kind="tooltip">Tooltip Description</description>
       </information>
       <resources>
+        <path>
+          <fileset dir="${build.target.directory}/webstart/libs/">
+          </fileset>
+        </path>
       </resources>
     </p:jnlp>
   </target>

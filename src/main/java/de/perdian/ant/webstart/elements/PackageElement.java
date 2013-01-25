@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class PackageElement implements ConfigurationElement {
 
@@ -25,7 +26,7 @@ public class PackageElement implements ConfigurationElement {
   private Boolean myRecursive = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element packageElement = ConfigurationHelper.appendElement(parentElement, "package");
     ConfigurationHelper.appendAttributeIfNotNull(packageElement, "name", this.getName());
     ConfigurationHelper.appendAttributeIfNotNull(packageElement, "part", this.getPart());

@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class SecurityElement implements ConfigurationElement {
 
@@ -24,10 +25,10 @@ public class SecurityElement implements ConfigurationElement {
   private SimpleTextElement myJ2eeapplicationclientpermissions = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element securityElement = ConfigurationHelper.appendElement(parentElement, "security");
-    ConfigurationHelper.appendElement(project, securityElement, this.getAllpermissions());
-    ConfigurationHelper.appendElement(project, securityElement, this.getJ2eeapplicationclientpermissions());
+    ConfigurationHelper.appendElement(task, securityElement, this.getAllpermissions());
+    ConfigurationHelper.appendElement(task, securityElement, this.getJ2eeapplicationclientpermissions());
   }
 
   // ---------------------------------------------------------------------------

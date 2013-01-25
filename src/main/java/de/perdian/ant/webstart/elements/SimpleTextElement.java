@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class SimpleTextElement implements ConfigurationElement {
 
@@ -28,7 +29,7 @@ public class SimpleTextElement implements ConfigurationElement {
   }
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     String trimmedText = this.getText() == null ? null : this.getText().trim();
     if(trimmedText != null && trimmedText.length() > 0) {
       Element childElement = ConfigurationHelper.appendElement(parentElement, this.getElementName());

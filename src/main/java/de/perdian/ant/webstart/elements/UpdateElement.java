@@ -15,9 +15,10 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.EnumeratedAttribute;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class UpdateElement implements ConfigurationElement {
 
@@ -25,7 +26,7 @@ public class UpdateElement implements ConfigurationElement {
   private PolicyAttribute myPolicy = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element updateElement = ConfigurationHelper.appendElement(parentElement, "update");
     ConfigurationHelper.appendAttributeIfNotNull(updateElement, "check", this.getCheck());
     ConfigurationHelper.appendAttributeIfNotNull(updateElement, "policy", this.getPolicy());

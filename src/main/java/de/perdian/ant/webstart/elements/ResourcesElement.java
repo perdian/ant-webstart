@@ -15,11 +15,17 @@
  */
 package de.perdian.ant.webstart.elements;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Ant.Reference;
+import org.apache.tools.ant.types.Path;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 /**
  * Collects general information to be written into the
@@ -38,20 +44,56 @@ public class ResourcesElement implements ConfigurationElement {
   private List<ExtensionElement> myExtension = new ArrayList<ExtensionElement>();
   private List<PackageElement> myPackage = new ArrayList<PackageElement>();
   private List<PropertyElement> myProperty = new ArrayList<PropertyElement>();
+  private Path myPath = null;
+  private Reference myPathref = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
+
     Element resourcesElement = ConfigurationHelper.appendElement(parentElement, "resources");
     ConfigurationHelper.appendAttributeIfNotNull(resourcesElement, "os", this.getOs());
     ConfigurationHelper.appendAttributeIfNotNull(resourcesElement, "arch", this.getArch());
     ConfigurationHelper.appendAttributeIfNotNull(resourcesElement, "locale", this.getLocale());
-    ConfigurationHelper.appendElements(project, resourcesElement, this.getJava());
-    ConfigurationHelper.appendElements(project, resourcesElement, this.getJar());
-    ConfigurationHelper.appendElements(project, resourcesElement, this.getNativelib());
-    ConfigurationHelper.appendElements(project, resourcesElement, this.getExtension());
-    ConfigurationHelper.appendElements(project, resourcesElement, this.getPackage());
-    ConfigurationHelper.appendElements(project, resourcesElement, this.getProperty());
+    ConfigurationHelper.appendElements(task, resourcesElement, this.getJava());
+    ConfigurationHelper.appendElements(task, resourcesElement, this.getJar());
+    ConfigurationHelper.appendElements(task, resourcesElement, this.getNativelib());
+    ConfigurationHelper.appendElements(task, resourcesElement, this.getExtension());
+    ConfigurationHelper.appendElements(task, resourcesElement, this.getPackage());
+    ConfigurationHelper.appendElements(task, resourcesElement, this.getProperty());
+
+    // Now compute the dynamic path
+    Path dynamicPath = new Path(task.getProject());
+    if(this.getPath() != null) {
+      dynamicPath.append(this.getPath());
+    }
+    if(this.getPathref() != null) {
+      dynamicPath.setRefid(this.getPathref());
+    }
+
+    // Since all entries within the JNLP should be relative to it's location,
+    // we compute the locations of the files found in the dynamic path against
+    // the URI of the destination file of the JNLP XML document
+    URI pathBaseUri = task.getDestfile().getParentFile().toURI();
+    for(String dynamicPathEntry : dynamicPath.list()) {
+      File resourceFile = new File(dynamicPathEntry);
+      if(resourceFile.isFile() && resourceFile.exists()) {
+        URI resourceUriAbsolute = resourceFile.toURI();
+        URI resourceUriRelative = pathBaseUri.relativize(resourceUriAbsolute);
+        if(resourceUriRelative.isAbsolute()) {
+          task.log("Computed resource entry is not relative! >> " + resourceUriRelative, Project.MSG_WARN);
+        }
+        JarElement jarElement = new JarElement();
+        jarElement.setHref(resourceUriRelative.toString());
+        jarElement.setSize((int)resourceFile.length());
+        jarElement.appendXml(task, resourcesElement);
+      }
+    }
+
   }
+
+  // ---------------------------------------------------------------------------
+  // --- Path computation ------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   // ---------------------------------------------------------------------------
   // --- Property access methods -----------------------------------------------
@@ -130,6 +172,26 @@ public class ResourcesElement implements ConfigurationElement {
   }
   public List<PropertyElement> getProperty() {
     return this.myProperty;
+  }
+
+  public Path getPath() {
+    return this.myPath;
+  }
+  public Path createPath() {
+    if(this.myPath == null) {
+      this.myPath = new Path(null);
+    }
+    return this.myPath;
+  }
+
+  public Reference createPathref() {
+    if(this.myPathref == null) {
+      this.myPathref = new Reference();
+    }
+    return this.myPathref;
+  }
+  public Reference getPathref() {
+    return this.myPathref;
   }
 
 }

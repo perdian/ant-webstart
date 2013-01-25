@@ -18,8 +18,9 @@ package de.perdian.ant.webstart.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class RelatedContentElement implements ConfigurationElement {
 
@@ -29,12 +30,12 @@ public class RelatedContentElement implements ConfigurationElement {
   private List<IconElement> myIcon = new ArrayList<IconElement>();
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element relatedContentElement = ConfigurationHelper.appendElement(parentElement, "related-content");
     ConfigurationHelper.appendAttributeIfNotNull(relatedContentElement, "title", this.getTitle());
     ConfigurationHelper.appendAttributeIfNotNull(relatedContentElement, "href", this.getHref());
-    ConfigurationHelper.appendElements(project, relatedContentElement, this.getDescription());
-    ConfigurationHelper.appendElements(project, relatedContentElement, this.getIcon());
+    ConfigurationHelper.appendElements(task, relatedContentElement, this.getDescription());
+    ConfigurationHelper.appendElements(task, relatedContentElement, this.getIcon());
   }
 
   // ---------------------------------------------------------------------------

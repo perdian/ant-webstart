@@ -17,8 +17,9 @@ package de.perdian.ant.webstart.elements;
 
 import java.util.List;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class AppletDescElement implements ConfigurationElement {
 
@@ -30,14 +31,14 @@ public class AppletDescElement implements ConfigurationElement {
   private List<ParamElement> myParam = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element appletDescElement = ConfigurationHelper.appendElement(parentElement, "applet-desc");
     ConfigurationHelper.appendAttributeIfNotNull(appletDescElement, "documentBase", this.getDocumentbase());
     ConfigurationHelper.appendAttributeIfNotNull(appletDescElement, "name", this.getName());
     ConfigurationHelper.appendAttributeIfNotNull(appletDescElement, "main-class", this.getMainclass());
     ConfigurationHelper.appendAttributeIfNotNull(appletDescElement, "width", this.getWidth());
     ConfigurationHelper.appendAttributeIfNotNull(appletDescElement, "height", this.getHeight());
-    ConfigurationHelper.appendElements(project, appletDescElement, this.getParam());
+    ConfigurationHelper.appendElements(task, appletDescElement, this.getParam());
   }
 
   // ---------------------------------------------------------------------------

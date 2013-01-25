@@ -15,10 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.types.Path;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class JarElement implements ConfigurationElement {
 
@@ -30,7 +29,7 @@ public class JarElement implements ConfigurationElement {
   private String myPart = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element jarElement = ConfigurationHelper.appendElement(parentElement, "jar");
     ConfigurationHelper.appendAttributeIfNotNull(jarElement, "href", this.getHref());
     ConfigurationHelper.appendAttributeIfNotNull(jarElement, "version", this.getVersion());
@@ -39,11 +38,6 @@ public class JarElement implements ConfigurationElement {
     ConfigurationHelper.appendAttributeIfNotNull(jarElement, "size", this.getSize());
     ConfigurationHelper.appendAttributeIfNotNull(jarElement, "part", this.getPart());
   }
-
-  private Path createClasspath(Task task) {
-    return new Path(task.getProject());
-  }
-
 
   // ---------------------------------------------------------------------------
   // --- Property access methods -----------------------------------------------

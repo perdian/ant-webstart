@@ -15,15 +15,16 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class HomepageElement implements ConfigurationElement {
 
   private String myHref = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element homepageElement = ConfigurationHelper.appendElement(parentElement, "homepage");
     ConfigurationHelper.appendAttributeIfNotNull(homepageElement, "href", this.getHref());
   }

@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class AssociationElement implements ConfigurationElement {
 
@@ -24,7 +25,7 @@ public class AssociationElement implements ConfigurationElement {
   private String myExtensions = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element associationElement = ConfigurationHelper.appendElement(parentElement, "association");
     ConfigurationHelper.appendAttributeIfNotNull(associationElement, "mime-type", this.getMimetype());
     ConfigurationHelper.appendAttributeIfNotNull(associationElement, "extensions", this.getExtensions());

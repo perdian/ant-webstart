@@ -18,8 +18,9 @@ package de.perdian.ant.webstart.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class ExtensionElement implements ConfigurationElement {
 
@@ -29,12 +30,12 @@ public class ExtensionElement implements ConfigurationElement {
   private List<ExtDownloadElement> myExtdownload = new ArrayList<ExtDownloadElement>();
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element extensionElement = ConfigurationHelper.appendElement(parentElement, "extension");
     ConfigurationHelper.appendAttributeIfNotNull(extensionElement, "href", this.getHref());
     ConfigurationHelper.appendAttributeIfNotNull(extensionElement, "version", this.getVersion());
     ConfigurationHelper.appendAttributeIfNotNull(extensionElement, "name", this.getName());
-    ConfigurationHelper.appendElements(project, extensionElement, this.getExtdownload());
+    ConfigurationHelper.appendElements(task, extensionElement, this.getExtdownload());
   }
 
   // ---------------------------------------------------------------------------

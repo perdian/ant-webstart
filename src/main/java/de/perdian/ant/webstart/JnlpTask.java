@@ -131,14 +131,14 @@ public class JnlpTask extends Task {
     jnlpDocument.appendChild(jnlpElement);
 
     // Now append all children information
-    ConfigurationHelper.appendElements(this.getProject(), jnlpElement, this.getInformation());
-    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getSecurity());
-    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getUpdate());
-    ConfigurationHelper.appendElements(this.getProject(), jnlpElement, this.getResources());
-    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getApplicationdesc());
-    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getAppletdesc());
-    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getComponentdesc());
-    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getInstallerdesc());
+    ConfigurationHelper.appendElements(this, jnlpElement, this.getInformation());
+    ConfigurationHelper.appendElement(this, jnlpElement, this.getSecurity());
+    ConfigurationHelper.appendElement(this, jnlpElement, this.getUpdate());
+    ConfigurationHelper.appendElements(this, jnlpElement, this.getResources());
+    ConfigurationHelper.appendElement(this, jnlpElement, this.getApplicationdesc());
+    ConfigurationHelper.appendElement(this, jnlpElement, this.getAppletdesc());
+    ConfigurationHelper.appendElement(this, jnlpElement, this.getComponentdesc());
+    ConfigurationHelper.appendElement(this, jnlpElement, this.getInstallerdesc());
 
   }
 

@@ -15,9 +15,10 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.EnumeratedAttribute;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class DescriptionElement implements ConfigurationElement {
 
@@ -25,7 +26,7 @@ public class DescriptionElement implements ConfigurationElement {
   private String myText = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element descriptionElement = ConfigurationHelper.appendElement(parentElement, "description");
     ConfigurationHelper.appendAttributeIfNotNull(descriptionElement, "kind", this.getKind());
     if(this.getText() != null) {

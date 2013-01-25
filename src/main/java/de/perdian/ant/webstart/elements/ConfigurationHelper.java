@@ -17,14 +17,15 @@ package de.perdian.ant.webstart.elements;
 
 import java.util.Collection;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class ConfigurationHelper {
 
-  public static void appendElement(Project project, Element parentElement, ConfigurationElement configurationElement) {
+  public static void appendElement(JnlpTask task, Element parentElement, ConfigurationElement configurationElement) {
     if(configurationElement != null) {
-      configurationElement.appendXml(project, parentElement);
+      configurationElement.appendXml(task, parentElement);
     }
   }
 
@@ -49,10 +50,10 @@ public class ConfigurationHelper {
     }
   }
 
-  public static void appendElements(Project project, Element parentElement, Collection<? extends ConfigurationElement> elements) {
+  public static void appendElements(JnlpTask task, Element parentElement, Collection<? extends ConfigurationElement> elements) {
     if(elements != null && !elements.isEmpty()) {
       for(ConfigurationElement element : elements) {
-        element.appendXml(project, parentElement);
+        element.appendXml(task, parentElement);
       }
     }
   }

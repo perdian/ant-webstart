@@ -18,8 +18,9 @@ package de.perdian.ant.webstart.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 /**
  * Collects general information to be written into the
@@ -44,7 +45,7 @@ public class InformationElement implements ConfigurationElement {
   private RelatedContentElement myRelatedContent = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
 
     Element informationElement = ConfigurationHelper.appendElement(parentElement, "information");
     ConfigurationHelper.appendAttributeIfNotNull(informationElement, "os", this.getOs());
@@ -52,15 +53,15 @@ public class InformationElement implements ConfigurationElement {
     ConfigurationHelper.appendAttributeIfNotNull(informationElement, "platform", this.getPlatform());
     ConfigurationHelper.appendAttributeIfNotNull(informationElement, "locale", this.getLocale());
 
-    ConfigurationHelper.appendElement(project, informationElement, this.getTitle());
-    ConfigurationHelper.appendElement(project, informationElement, this.getVendor());
-    ConfigurationHelper.appendElement(project, informationElement, this.getHomepage());
-    ConfigurationHelper.appendElements(project, informationElement, this.getDescription());
-    ConfigurationHelper.appendElements(project, informationElement, this.getIcon());
-    ConfigurationHelper.appendElement(project, informationElement, this.getOfflineallowed());
-    ConfigurationHelper.appendElement(project, informationElement, this.getAssociation());
-    ConfigurationHelper.appendElement(project, informationElement, this.getShortcut());
-    ConfigurationHelper.appendElement(project, informationElement, this.getRelatedContent());
+    ConfigurationHelper.appendElement(task, informationElement, this.getTitle());
+    ConfigurationHelper.appendElement(task, informationElement, this.getVendor());
+    ConfigurationHelper.appendElement(task, informationElement, this.getHomepage());
+    ConfigurationHelper.appendElements(task, informationElement, this.getDescription());
+    ConfigurationHelper.appendElements(task, informationElement, this.getIcon());
+    ConfigurationHelper.appendElement(task, informationElement, this.getOfflineallowed());
+    ConfigurationHelper.appendElement(task, informationElement, this.getAssociation());
+    ConfigurationHelper.appendElement(task, informationElement, this.getShortcut());
+    ConfigurationHelper.appendElement(task, informationElement, this.getRelatedContent());
 
   }
 

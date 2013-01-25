@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class PropertyElement implements ConfigurationElement {
 
@@ -24,7 +25,7 @@ public class PropertyElement implements ConfigurationElement {
   private String myValue = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element propertyElement = ConfigurationHelper.appendElement(parentElement, "property");
     ConfigurationHelper.appendAttributeIfNotNull(propertyElement, "name", this.getName());
     ConfigurationHelper.appendAttributeIfNotNull(propertyElement, "value", this.getValue());

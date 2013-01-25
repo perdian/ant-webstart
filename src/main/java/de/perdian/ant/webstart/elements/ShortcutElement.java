@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class ShortcutElement implements ConfigurationElement {
 
@@ -26,12 +27,12 @@ public class ShortcutElement implements ConfigurationElement {
   private MenuElement myMenu = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element shortcutElement = ConfigurationHelper.appendElement(parentElement, "shortcut");
     ConfigurationHelper.appendAttributeIfNotNull(shortcutElement, "online", this.getOnline());
     ConfigurationHelper.appendAttributeIfNotNull(shortcutElement, "install", this.getOnline());
-    ConfigurationHelper.appendElement(project, shortcutElement, this.getDesktop());
-    ConfigurationHelper.appendElement(project, shortcutElement, this.getMenu());
+    ConfigurationHelper.appendElement(task, shortcutElement, this.getDesktop());
+    ConfigurationHelper.appendElement(task, shortcutElement, this.getMenu());
   }
 
   // ---------------------------------------------------------------------------

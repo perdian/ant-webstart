@@ -15,9 +15,10 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.EnumeratedAttribute;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class IconElement implements ConfigurationElement {
 
@@ -28,7 +29,7 @@ public class IconElement implements ConfigurationElement {
   private Integer myDepth = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element iconElement = ConfigurationHelper.appendElement(parentElement, "icon");
     ConfigurationHelper.appendAttributeIfNotNull(iconElement, "href", this.getHref());
     ConfigurationHelper.appendAttributeIfNotNull(iconElement, "kind", this.getKind());

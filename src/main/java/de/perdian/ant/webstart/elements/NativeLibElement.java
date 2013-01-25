@@ -15,8 +15,9 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class NativeLibElement implements ConfigurationElement {
 
@@ -27,7 +28,7 @@ public class NativeLibElement implements ConfigurationElement {
   private String myPart = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element nativeLibElement = ConfigurationHelper.appendElement(parentElement, "native-lib");
     ConfigurationHelper.appendAttributeIfNotNull(nativeLibElement, "href", this.getHref());
     ConfigurationHelper.appendAttributeIfNotNull(nativeLibElement, "version", this.getVersion());

@@ -18,8 +18,9 @@ package de.perdian.ant.webstart.elements;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class ApplicationDescElement implements ConfigurationElement {
 
@@ -27,10 +28,10 @@ public class ApplicationDescElement implements ConfigurationElement {
   private List<ArgumentElement> myArgument = new ArrayList<ArgumentElement>();
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element applicationDescElement = ConfigurationHelper.appendElement(parentElement, "application-desc");
     ConfigurationHelper.appendAttributeIfNotNull(applicationDescElement, "main-class", this.getMainclass());
-    ConfigurationHelper.appendElements(project, applicationDescElement, this.getArgument());
+    ConfigurationHelper.appendElements(task, applicationDescElement, this.getArgument());
   }
 
   // ---------------------------------------------------------------------------

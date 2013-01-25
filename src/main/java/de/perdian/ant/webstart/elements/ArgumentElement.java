@@ -15,15 +15,16 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class ArgumentElement implements ConfigurationElement {
 
   private String myText = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element argumentElement = ConfigurationHelper.appendElement(parentElement, "argument");
     argumentElement.appendChild(parentElement.getOwnerDocument().createTextNode(this.getText()));
   }

@@ -15,15 +15,16 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
+
+import de.perdian.ant.webstart.JnlpTask;
 
 public class MenuElement implements ConfigurationElement {
 
   private String mySubmenu = null;
 
   @Override
-  public void appendXml(Project project, Element parentElement) {
+  public void appendXml(JnlpTask task, Element parentElement) {
     Element menuElement = ConfigurationHelper.appendElement(parentElement, "menu");
     ConfigurationHelper.appendAttributeIfNotNull(menuElement, "sub-menu", this.getSubmenu());
   }
