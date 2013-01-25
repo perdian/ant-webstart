@@ -37,7 +37,15 @@
   <target name="test" depends="jar">
     <taskdef uri="antlib:de.perdian.ant.webstart" classpath="${build.target.directory}/jar/${project.name}.jar" />
     <p:jnlp destfile="${build.target.directory}/webstart/test.jnlp">
-      <information title="aTitle" vendor="aVendor" offlineallowed="true" />
+      <information>
+        <title>aTitle</title>
+        <vendor>aVendor</vendor>
+        <offlineallowed />
+        <description kind="short">Short Description</description>
+        <description kind="tooltip">Tooltip Description</description>
+      </information>
+      <resources>
+      </resources>
     </p:jnlp>
   </target>
 

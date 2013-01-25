@@ -17,6 +17,8 @@ package de.perdian.ant.webstart;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,8 +36,15 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import de.perdian.ant.webstart.elements.AppletDescElement;
+import de.perdian.ant.webstart.elements.ApplicationDescElement;
+import de.perdian.ant.webstart.elements.ComponentDescElement;
+import de.perdian.ant.webstart.elements.ConfigurationHelper;
 import de.perdian.ant.webstart.elements.InformationElement;
+import de.perdian.ant.webstart.elements.InstallerDescElement;
 import de.perdian.ant.webstart.elements.ResourcesElement;
+import de.perdian.ant.webstart.elements.SecurityElement;
+import de.perdian.ant.webstart.elements.UpdateElement;
 
 /**
  * The main task from which the application will be generated
@@ -47,14 +56,23 @@ public class JnlpTask extends Task {
 
   private File myDestfile = null;
   private String mySpec = "6.0+";
-  private InformationElement myInformation = null;
-  private ResourcesElement myResources = null;
+  private String myCodebase = null;
+  private String myHref = null;
+  private String myVersion = null;
+  private List<InformationElement> myInformation = new ArrayList<InformationElement>();
+  private SecurityElement mySecurity = null;
+  private UpdateElement myUpdate = null;
+  private List<ResourcesElement> myResources = new ArrayList<ResourcesElement>();
+  private ApplicationDescElement myApplicationdesc = null;
+  private AppletDescElement myAppletdesc = null;
+  private ComponentDescElement myComponentdesc = null;
+  private InstallerDescElement myInstallerdesc = null;
 
   @Override
   public void execute() throws BuildException {
     if(this.getDestfile() == null) {
       throw new BuildException("Attribtue 'destfile' must be present");
-    } else if(this.getInformation() == null) {
+    } else if(this.getInformation() == null || this.getInformation().isEmpty()) {
       throw new BuildException("Child element 'information' must be present");
     } else if(this.getResources() == null) {
       throw new BuildException("Child element 'resources' must be present");
@@ -106,12 +124,21 @@ public class JnlpTask extends Task {
   private void appendJnlpContent(Document jnlpDocument) throws DOMException {
 
     Element jnlpElement = jnlpDocument.createElement("jnlp");
-    jnlpElement.setAttribute("spec", this.getSpec());
+    ConfigurationHelper.appendAttributeIfNotNull(jnlpElement, "spec", this.getSpec());
+    ConfigurationHelper.appendAttributeIfNotNull(jnlpElement, "codebase", this.getCodebase());
+    ConfigurationHelper.appendAttributeIfNotNull(jnlpElement, "href", this.getHref());
+    ConfigurationHelper.appendAttributeIfNotNull(jnlpElement, "version", this.getVersion());
     jnlpDocument.appendChild(jnlpElement);
 
     // Now append all children information
-    this.getInformation().appendXml(jnlpDocument, jnlpElement);
-    this.getResources().appendXml(jnlpDocument, jnlpElement);
+    ConfigurationHelper.appendElements(this.getProject(), jnlpElement, this.getInformation());
+    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getSecurity());
+    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getUpdate());
+    ConfigurationHelper.appendElements(this.getProject(), jnlpElement, this.getResources());
+    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getApplicationdesc());
+    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getAppletdesc());
+    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getComponentdesc());
+    ConfigurationHelper.appendElement(this.getProject(), jnlpElement, this.getInstallerdesc());
 
   }
 
@@ -133,24 +160,97 @@ public class JnlpTask extends Task {
     this.mySpec = spec;
   }
 
-  public InformationElement createInformation() {
-    if(this.myInformation == null) {
-      this.myInformation = new InformationElement();
-    }
-    return this.myInformation;
+  public String getCodebase() {
+    return this.myCodebase;
   }
-  public InformationElement getInformation() {
+  public void setCodebase(String codebase) {
+    this.myCodebase = codebase;
+  }
+
+  public String getHref() {
+    return this.myHref;
+  }
+  public void setHref(String href) {
+    this.myHref = href;
+  }
+
+  public String getVersion() {
+    return this.myVersion;
+  }
+  public void setVersion(String version) {
+    this.myVersion = version;
+  }
+
+  public InformationElement createInformation() {
+    InformationElement information = new InformationElement();
+    this.getInformation().add(information);
+    return information;
+  }
+  public List<InformationElement> getInformation() {
     return this.myInformation;
   }
 
   public ResourcesElement createResources() {
-    if(this.myResources == null) {
-      this.myResources = new ResourcesElement();
-    }
+    ResourcesElement resources = new ResourcesElement();
+    this.getResources().add(resources);
+    return resources;
+  }
+  public List<ResourcesElement> getResources() {
     return this.myResources;
   }
-  public ResourcesElement getResources() {
-    return this.myResources;
+
+  public SecurityElement createSecurity() {
+    if(this.mySecurity == null) {
+      this.mySecurity = new SecurityElement();
+    }
+    return this.mySecurity;
+  }
+  public SecurityElement getSecurity() {
+    return this.mySecurity;
+  }
+
+  public UpdateElement createUpdate() {
+    if(this.myUpdate == null) {
+      this.myUpdate = new UpdateElement();
+    }
+    return this.myUpdate;
+  }
+  public UpdateElement getUpdate() {
+    return this.myUpdate;
+  }
+
+  public ApplicationDescElement createApplicationdesc() {
+    if(this.myApplicationdesc == null) {
+      this.myApplicationdesc = new ApplicationDescElement();
+    }
+    return this.myApplicationdesc;
+  }
+  public ApplicationDescElement getApplicationdesc() {
+    return this.myApplicationdesc;
+  }
+
+  public AppletDescElement createAppletdesc() {
+    if(this.myAppletdesc == null) {
+      this.myAppletdesc = new AppletDescElement();
+    }
+    return this.myAppletdesc;
+  }
+  public AppletDescElement getAppletdesc() {
+    return this.myAppletdesc;
+  }
+
+  public ComponentDescElement getComponentdesc() {
+    return this.myComponentdesc;
+  }
+  public void setComponentdesc(ComponentDescElement componentdesc) {
+    this.myComponentdesc = componentdesc;
+  }
+
+  public InstallerDescElement getInstallerdesc() {
+    return this.myInstallerdesc;
+  }
+  public void setInstallerdesc(InstallerDescElement installerdesc) {
+    this.myInstallerdesc = installerdesc;
   }
 
 }

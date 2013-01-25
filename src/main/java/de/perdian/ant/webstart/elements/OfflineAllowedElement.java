@@ -18,8 +18,11 @@ package de.perdian.ant.webstart.elements;
 import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
 
-public interface ConfigurationElement {
+public class OfflineAllowedElement implements ConfigurationElement {
 
-  public void appendXml(Project project, Element parentElement);
+  @Override
+  public void appendXml(Project project, Element parentElement) {
+    ConfigurationHelper.appendElement(parentElement, "offline-allowed");
+  }
 
 }

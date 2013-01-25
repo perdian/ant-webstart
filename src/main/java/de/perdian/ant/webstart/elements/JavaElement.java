@@ -15,19 +15,30 @@
  */
 package de.perdian.ant.webstart.elements;
 
-import org.w3c.dom.Document;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.tools.ant.Project;
 import org.w3c.dom.Element;
 
-public class JavaElement extends ConfigurationElement {
+public class JavaElement implements ConfigurationElement {
 
   private String myVersion = null;
   private String myHref = null;
   private String myJavavmargs = null;
   private String myInitialheapsize = null;
   private String myMaxheapsize = null;
+  private List<PropertyElement> myProperty = new ArrayList<PropertyElement>();
 
   @Override
-  public void appendXml(Document document, Element parentElement) {
+  public void appendXml(Project project, Element parentElement) {
+    Element javaElement = ConfigurationHelper.appendElement(parentElement, "java");
+    ConfigurationHelper.appendAttributeIfNotNull(javaElement, "version", this.getVersion());
+    ConfigurationHelper.appendAttributeIfNotNull(javaElement, "href", this.getHref());
+    ConfigurationHelper.appendAttributeIfNotNull(javaElement, "java-vm-args", this.getJavavmargs());
+    ConfigurationHelper.appendAttributeIfNotNull(javaElement, "initial-heap-size", this.getInitialheapsize());
+    ConfigurationHelper.appendAttributeIfNotNull(javaElement, "max-heap-size", this.getMaxheapsize());
+    ConfigurationHelper.appendElements(project, javaElement, this.getProperty());
   }
 
   // ---------------------------------------------------------------------------
@@ -67,6 +78,15 @@ public class JavaElement extends ConfigurationElement {
   }
   public void setMaxheapsize(String maxheapsize) {
     this.myMaxheapsize = maxheapsize;
+  }
+
+  public PropertyElement createProperty() {
+    PropertyElement property = new PropertyElement();
+    this.getProperty().add(property);
+    return property;
+  }
+  public List<PropertyElement> getProperty() {
+    return this.myProperty;
   }
 
 }
