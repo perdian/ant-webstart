@@ -137,11 +137,14 @@ public class InformationElement implements ConfigurationElement {
     this.myLocale = locale;
   }
 
-  public HomepageElement getHomepage() {
+  public HomepageElement createHomepage() {
+    if(this.myHomepage == null) {
+      this.myHomepage = new HomepageElement();
+    }
     return this.myHomepage;
   }
-  public void setHomepage(HomepageElement homepage) {
-    this.myHomepage = homepage;
+  public HomepageElement getHomepage() {
+    return this.myHomepage;
   }
 
   public DescriptionElement createDescription() {
