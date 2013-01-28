@@ -5,26 +5,30 @@ Ant task to generate a deployment structure for a webstart enabled application.
 An example:
 
     <project xmlns:p="antlib:de.perdian.ant.webstart">
-
-    <taskdef uri="antlib:de.perdian.ant.webstart" classpath="/path/to/webstart.jar" />
-    <p:jnlp destfile="${build.target.directory}/webstart/test.jnlp">
-      <information>
-        <title>aTitle</title>
-        <vendor>aVendor</vendor>
-        <offlineallowed />
-        <description>Short Description</description>
-      </information>
-      <resources>
-        <path>
-          <fileset dir="${build.target.directory}/webstart/libs/">
-          </fileset>
-        </path>
-      </resources>
-      <security>
-        <allpermissions />
-      </security>
-      <applicationdesc mainclass="de.perdian.google.api.apps.impl.driveclient.DriveClientLauncher" />
-    </p:jnlp>
+      ...
+      <target name="create-webstart">
+        <taskdef uri="antlib:de.perdian.ant.webstart" classpath="/path/to/webstart.jar" />
+        <p:jnlp destfile="${build.target.directory}/webstart/test.jnlp">
+          <information>
+            <title>aTitle</title>
+            <vendor>aVendor</vendor>
+            <offlineallowed />
+            <description>Short Description</description>
+          </information>
+          <resources>
+            <path>
+              <fileset dir="${build.target.directory}/webstart/libs/">
+              </fileset>
+            </path>
+          </resources>
+          <security>
+            <allpermissions />
+          </security>
+          <applicationdesc mainclass="de.perdian.google.api.apps.impl.driveclient.DriveClientLauncher" />
+        </p:jnlp>
+      </target>
+      ...
+    </project>
 
 All in all, the declaration of the target JNLP file in the Ant task ist almost
 identical to the actual JNLP file, as it is defined in the specification
