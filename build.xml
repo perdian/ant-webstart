@@ -3,11 +3,13 @@
   <property name="project.name" value="ant-webstart" />
   <property name="project.directory" location="./" />
   <property name="distribution.target.directory" location="${project.directory}/distribution/" />
+  <property name="release.target.directory" location="${project.directory}/release/" />
   <property name="build.target.directory" location="${project.directory}/build/" />
-  <property name="build.version" value="0.1" />
+  <property name="build.version" value="1.0" />
 
   <target name="init">
     <ivy:resolve file="${project.directory}/ivy.xml" log="quiet" />
+    <mkdir dir="${build.target.directory}" />
   </target>
 
   <target name="clean" depends="init">
@@ -29,9 +31,31 @@
   </target>
 
   <target name="jar" depends="compile">
-    <jar destfile="${build.target.directory}/jar/${project.name}.jar">
+    <mkdir dir="${build.target.directory}/jar/" />
+    <jar destfile="${build.target.directory}/jar/${project.name}-${build.version}.jar">
       <fileset dir="${build.target.directory}/classes/main/" />
     </jar>
+  </target>
+
+  <target name="distribute-lib" depends="clean, jar">
+    <mkdir dir="${distribution.target.directory}/lib/" />
+    <delete includeemptydirs="true">
+      <fileset dir="${distribution.target.directory}/lib/" />
+    </delete>
+    <copy todir="${distribution.target.directory}/lib/">
+      <fileset dir="${build.target.directory}/jar/" />
+      <fileset dir="${project.directory}">
+        <include name="LICENSE.txt" />
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="release-lib" depends="distribute-lib">
+    <mkdir dir="${release.target.directory}/lib/" />
+    <delete file="${release.target.directory}/lib/${project.name}.zip" />
+    <zip destfile="${release.target.directory}/lib/${project.name}.zip">
+      <fileset dir="${distribution.target.directory}/lib/" />
+    </zip>
   </target>
 
 </project>

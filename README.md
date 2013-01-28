@@ -43,3 +43,28 @@ allows for a dynamic way to add required resources, without actually having to
 declare them over and over again. The path's to the resource files (usually
 JARs) will be relative to the location of the JNLP file itself (as defined in
 the <code>destfile</code> attribute of the main task element).
+
+## Requirements
+
+The ant-webstart tasks require Java SE 6 or higher.
+
+## Download
+
+The latest binary release can be downloaded from:
+
+> https://raw.github.com/perdian/ant-webstart/master/release/lib/ant-webstart.zip
+
+## Build
+
+If you want to build the application yourself, all you have to do once you've
+cloned the Git repository is to call the Ant buildscript:
+
+    cd /whereever/your/project/is
+    ant distribute-lib
+
+Please note, that since the project uses Apache Ivy as dependency management
+system, your Ant installation must also have the Apache Ivy JAR-File in it's
+classpath. For furhter information about Apache Ivy see: http://ant.apache.org/ivy/history/2.2.0/install.html
+
+Once the build is completed, the JAR file containing the tasks can be found in
+the <code>distribution/lib</code> subdirectory.
