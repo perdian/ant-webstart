@@ -31,8 +31,8 @@ public class SimpleTextElement implements ConfigurationElement {
   @Override
   public void appendXml(JnlpTask task, Element parentElement) {
     String trimmedText = this.getText() == null ? null : this.getText().trim();
+    Element childElement = ConfigurationHelper.appendElement(parentElement, this.getElementName());
     if(trimmedText != null && trimmedText.length() > 0) {
-      Element childElement = ConfigurationHelper.appendElement(parentElement, this.getElementName());
       childElement.appendChild(parentElement.getOwnerDocument().createTextNode(trimmedText));
     }
   }

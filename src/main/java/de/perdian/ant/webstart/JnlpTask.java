@@ -94,6 +94,7 @@ public class JnlpTask extends Task {
 
       // The content of the JNLP will be created as a DOM document first, then
       // we encode the document into the target file
+      this.log("Writing JNLP file at: " + this.getDestfile().getAbsolutePath(), Project.MSG_INFO);
       try {
         Document jnlpDocument = this.createJnlpDom();
         StreamResult fileResult = new StreamResult(this.getDestfile());

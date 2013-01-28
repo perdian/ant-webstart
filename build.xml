@@ -19,7 +19,7 @@
   <target name="compile" depends="init">
     <ivy:cachepath pathid="project.compile.classpath.id" conf="compile" log="quiet" />
     <mkdir dir="${build.target.directory}/classes/main/" />
-    <javac destdir="${build.target.directory}/classes/main/" includeantruntime="false" debug="true">
+    <javac destdir="${build.target.directory}/classes/main/" includeantruntime="false" debug="true" source="1.6" target="1.6">
       <classpath refid="project.compile.classpath.id" />
       <src path="${project.directory}/src/main/java/" />
     </javac>
@@ -32,29 +32,6 @@
     <jar destfile="${build.target.directory}/jar/${project.name}.jar">
       <fileset dir="${build.target.directory}/classes/main/" />
     </jar>
-  </target>
-
-  <target name="test" depends="jar">
-    <ivy:cachepath pathid="project.compile.classpath.id" conf="compile" log="quiet" />
-    <mkdir dir="${build.target.directory}/webstart/libs/" />
-    <ivy:retrieve conf="*" pattern="${build.target.directory}/webstart/libs/[artifact].[ext]" />
-
-    <taskdef uri="antlib:de.perdian.ant.webstart" classpath="${build.target.directory}/jar/${project.name}.jar" />
-    <p:jnlp destfile="${build.target.directory}/webstart/test.jnlp">
-      <information>
-        <title>aTitle</title>
-        <vendor>aVendor</vendor>
-        <offlineallowed />
-        <description kind="short">Short Description</description>
-        <description kind="tooltip">Tooltip Description</description>
-      </information>
-      <resources>
-        <path>
-          <fileset dir="${build.target.directory}/webstart/libs/">
-          </fileset>
-        </path>
-      </resources>
-    </p:jnlp>
   </target>
 
 </project>
