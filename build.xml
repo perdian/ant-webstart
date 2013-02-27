@@ -91,7 +91,7 @@
   <target name="release-lib" depends="distribute-lib">
 
     <mkdir dir="${release.target.directory}/archive/" />
-    <zip destfile="${release.target.directory}/archive/${project.name}-${ivy.revision}.zip">
+    <zip destfile="${release.target.directory}/archive/${ivy.module}-${ivy.revision}.zip">
       <fileset dir="${build.target.directory}/distribution/lib/" />
     </zip>
 
@@ -99,7 +99,7 @@
     <delete failonerror="false" includeemptydirs="true">
       <fileset dir="${release.target.directory}/latest/" />
     </delete>
-    <zip destfile="${release.target.directory}/latest/${project.name}-${ivy.revision}.zip">
+    <zip destfile="${release.target.directory}/latest/${ivy.module}-${ivy.revision}.zip">
       <fileset dir="${build.target.directory}/distribution/lib/" />
     </zip>
 
