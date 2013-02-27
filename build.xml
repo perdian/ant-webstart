@@ -1,43 +1,73 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:p="antlib:de.perdian.ant.webstart">
 
-  <property name="project.name" value="ant-webstart" />
   <property name="project.directory" location="./" />
-  <property name="release.target.directory" location="${project.directory}/release/" />
-  <property name="build.version" value="SNAPSHOT" />
   <property name="build.target.directory" location="${project.directory}/build/" />
+  <property name="build.version" value="SNAPTSHOT" />
   <property name="ivy.local.default.root" value="${build.target.directory}/repository/"/>
 
   <target name="init">
     <ivy:resolve file="${project.directory}/ivy.xml" log="quiet" />
-    <mkdir dir="${build.target.directory}" />
   </target>
 
-  <target name="clean" depends="init">
+  <target name="clean">
+    <mkdir dir="${build.target.directory}" />
     <delete includeemptydirs="true">
       <fileset dir="${build.target.directory}" />
     </delete>
   </target>
 
-  <target name="compile" depends="init">
-    <ivy:cachepath pathid="project.compile.classpath.id" conf="compile" log="quiet" />
+  <target name="compile" depends="init, clean">
+    <ivy:cachepath pathid="classpath.compile" conf="compile" log="quiet" />
     <mkdir dir="${build.target.directory}/classes/main/" />
-    <javac destdir="${build.target.directory}/classes/main/" includeantruntime="false" debug="true" source="1.6" target="1.6">
-      <classpath refid="project.compile.classpath.id" />
+    <javac destdir="${build.target.directory}/classes/main/" includeantruntime="false" debug="true">
+      <classpath refid="classpath.compile" />
       <src path="${project.directory}/src/main/java/" />
     </javac>
-    <copy todir="${build.target.directory}/classes/main/" failonerror="false">
-      <fileset dir="${project.directory}/src/main/resources/" />
+  </target>
+
+  <target name="test" depends="compile">
+<!--
+    <ivy:cachepath pathid="classpath.test" conf="test" log="quiet" />
+    <mkdir dir="${build.target.directory}/classes/test/" />
+    <javac destdir="${build.target.directory}/classes/test/" includeantruntime="false" debug="true">
+      <classpath>
+        <path path="${build.target.directory}/classes/main/" />
+        <path refid="classpath.test" />
+      </classpath>
+      <src path="${project.directory}/src/test/java/" />
+    </javac>
+    <copy todir="${build.target.directory}/classes/test/" overwrite="true">
+      <fileset dir="${project.directory}/src/test/resources/" />
     </copy>
+
+    <mkdir dir="${build.target.directory}/reports/junit/" />
+    <junit printsummary="yes" haltonfailure="${build.haltontestfailures}">
+      <classpath>
+        <path path="${build.target.directory}/classes/test/" />
+        <path path="${build.target.directory}/classes/main/" />
+        <path refid="classpath.test" />
+      </classpath>
+      <formatter type="xml" />
+      <batchtest todir="${build.target.directory}/reports/junit/">
+        <fileset dir="${build.target.directory}/classes/test/">
+          <include name="**/Test*.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+-->
   </target>
 
   <target name="jar" depends="compile">
     <mkdir dir="${build.target.directory}/jar/" />
-    <jar destfile="${build.target.directory}/jar/${project.name}-${ivy.revision}.jar">
+    <jar destfile="${build.target.directory}/jar/${ivy.module}.jar">
       <fileset dir="${build.target.directory}/classes/main/" />
     </jar>
+    <zip destfile="${build.target.directory}/jar/${ivy.module}-sources.jar">
+      <fileset dir="${project.directory}/src/main/java/" />
+    </zip>
   </target>
 
-  <target name="build-lib" depends="clean, jar">
+  <target name="build-lib" depends="jar, test">
   </target>
 
   <target name="distribute-lib" depends="build-lib">
@@ -75,22 +105,29 @@
 
   </target>
 
+  <!--
+    Publish the artifacts into the default anderScore artifactory repository.
+    The URL, username and password must be made available as properties before
+    the build script is executed. The following external properties must be
+    defined:
+    - publish.buildnumber
+  -->
   <target name="publish-lib" depends="distribute-lib">
 
-    <mkdir dir="${build.target.directory}/publish/source/" />
-    <ivy:makepom ivyfile="${project.directory}/ivy.xml" pomfile="${build.target.directory}/publish/source/pom/${ivy.module}.pom"/>
+    <mkdir dir="${build.target.directory}/publish/" />
+    <ivy:makepom ivyfile="${project.directory}/ivy.xml" pomfile="${build.target.directory}/publish/pom/${ivy.module}.pom"/>
 
-    <jar destfile="${build.target.directory}/publish/source/jar/${ivy.module}.jar">
+    <jar destfile="${build.target.directory}/publish/jar/${ivy.module}.jar">
       <fileset dir="${build.target.directory}/classes/main/" />
     </jar>
 
-    <zip destfile="${build.target.directory}/publish/source/source/${ivy.module}-sources.source">
+    <zip destfile="${build.target.directory}/publish/source/${ivy.module}-sources.source">
       <fileset dir="${project.directory}/src/main/java/" />
     </zip>
 
-    <property name="publish.revision" value="${ivy.revision}.${build.version}" />
-    <ivy:publish resolver="local" overwrite="true" pubrevision="${publish.revision}">
-      <artifacts pattern="${build.target.directory}/publish/source/[type]/[artifact](-[classifier]).[ext]" />
+    <property name="publish.revision" value="${ivy.revision}.${publish.buildnumber}" />
+    <ivy:publish resolver="local" overwrite="true" pubrevision="${build.version}">
+      <artifacts pattern="${build.target.directory}/publish/[type]/[artifact](-[classifier]).[ext]" />
     </ivy:publish>
 
   </target>
