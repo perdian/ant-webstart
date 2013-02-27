@@ -132,4 +132,7 @@
 
   </target>
 
+  <target name="deploy-lib" depends="release-lib, publish-lib">
+  </target>
+
 </project>
