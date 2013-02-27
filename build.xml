@@ -8,7 +8,6 @@
   <property name="ivy.local.default.root" value="${build.target.directory}/repository/"/>
 
   <target name="init">
-    <ivy:configure />
     <ivy:resolve file="${project.directory}/ivy.xml" log="quiet" />
     <mkdir dir="${build.target.directory}" />
   </target>
