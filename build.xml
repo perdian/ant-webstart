@@ -2,10 +2,11 @@
 
   <property name="project.name" value="ant-webstart" />
   <property name="project.directory" location="./" />
-  <property name="distribution.target.directory" location="${project.directory}/distribution/" />
   <property name="release.target.directory" location="${project.directory}/release/" />
+  <property name="release.version" value="1.0" />
+  <property name="build.version" value="SNAPSHOT" />
   <property name="build.target.directory" location="${project.directory}/build/" />
-  <property name="build.version" value="1.0" />
+  <property name="ivy.local.default.root" value="${build.target.directory}/repository/"/>
 
   <target name="init">
     <ivy:resolve file="${project.directory}/ivy.xml" log="quiet" />
@@ -32,30 +33,68 @@
 
   <target name="jar" depends="compile">
     <mkdir dir="${build.target.directory}/jar/" />
-    <jar destfile="${build.target.directory}/jar/${project.name}-${build.version}.jar">
+    <jar destfile="${build.target.directory}/jar/${project.name}-${release.version}.jar">
       <fileset dir="${build.target.directory}/classes/main/" />
     </jar>
   </target>
 
-  <target name="distribute-lib" depends="clean, jar">
-    <mkdir dir="${distribution.target.directory}/lib/" />
-    <delete includeemptydirs="true">
-      <fileset dir="${distribution.target.directory}/lib/" />
-    </delete>
-    <copy todir="${distribution.target.directory}/lib/">
+  <target name="build-lib" depends="clean, jar">
+  </target>
+
+  <target name="distribute-lib" depends="build-lib">
+
+    <mkdir dir="${build.target.directory}/distribution/lib/" />
+    <copy todir="${build.target.directory}/distribution/lib/">
       <fileset dir="${build.target.directory}/jar/" />
-      <fileset dir="${project.directory}">
-        <include name="LICENSE.txt" />
-      </fileset>
+      <fileset dir="${project.directory}/src/main/release/lib/" />
     </copy>
+
+<!--
+    Currently, there are not dependencies to be included in the distribution,
+    so we can ignore the retrieve process here
+
+    <mkdir dir="${build.target.directory}/distribution/lib/libs/" />
+    <ivy:retrieve conf="lib" pattern="${build.target.directory}/distribution/lib/libs/[artifact].[ext]" />
+-->
+
   </target>
 
   <target name="release-lib" depends="distribute-lib">
-    <mkdir dir="${release.target.directory}/lib/" />
-    <delete file="${release.target.directory}/lib/${project.name}.zip" />
-    <zip destfile="${release.target.directory}/lib/${project.name}.zip">
-      <fileset dir="${distribution.target.directory}/lib/" />
+
+    <mkdir dir="${release.target.directory}/archive/" />
+    <zip destfile="${release.target.directory}/archive/${project.name}-${release.version}.zip">
+      <fileset dir="${build.target.directory}/distribution/lib/" />
     </zip>
+
+    <mkdir dir="${release.target.directory}/latest/" />
+    <delete failonerror="false" includeemptydirs="true">
+      <fileset dir="${release.target.directory}/latest/" />
+    </delete>
+    <zip destfile="${release.target.directory}/latest/${project.name}-${release.version}.zip">
+      <fileset dir="${build.target.directory}/distribution/lib/" />
+    </zip>
+
+  </target>
+
+  <target name="publish-lib" depends="distribute-lib">
+
+    <mkdir dir="${build.target.directory}/publish/" />
+    <jar destfile="${build.target.directory}/publish/jar-${ivy.module}.jar">
+      <fileset dir="${build.target.directory}/classes/main/" />
+    </jar>
+
+    <zip destfile="${build.target.directory}/publish/source-${ivy.module}-sources.jar">
+      <fileset dir="${project.directory}/src/main/java/" />
+    </zip>
+
+    <property name="publish.version">${release.version}.${build.version}</property>
+
+    <ivy:makepom ivyfile="${project.directory}/ivy.xml" pomfile="${build.target.directory}/publish/pom-${ivy.module}.pom"/>
+    <ivy:publish resolver="local" overwrite="true" pubrevision="${publish.version}">
+      <artifacts pattern="${build.target.directory}/publish/[type]-[artifact].[ext]" />
+      <artifacts pattern="${build.target.directory}/publish/[type]-[artifact](-[classifier]).[ext]" />
+    </ivy:publish>
+
   </target>
 
 </project>

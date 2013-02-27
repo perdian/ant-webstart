@@ -56,7 +56,7 @@ The ant-webstart tasks require Java SE 6 or higher.
 
 The latest binary release can be downloaded from:
 
-> https://raw.github.com/perdian/ant-webstart/master/release/lib/ant-webstart.zip
+> http://dev.perdian.de/ant-webstart/releases/latest/
 
 ## Build
 
