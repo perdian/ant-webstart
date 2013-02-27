@@ -3,12 +3,12 @@
   <property name="project.name" value="ant-webstart" />
   <property name="project.directory" location="./" />
   <property name="release.target.directory" location="${project.directory}/release/" />
-  <property name="release.version" value="1.0" />
   <property name="build.version" value="SNAPSHOT" />
   <property name="build.target.directory" location="${project.directory}/build/" />
   <property name="ivy.local.default.root" value="${build.target.directory}/repository/"/>
 
   <target name="init">
+    <ivy:configure />
     <ivy:resolve file="${project.directory}/ivy.xml" log="quiet" />
     <mkdir dir="${build.target.directory}" />
   </target>
@@ -33,7 +33,7 @@
 
   <target name="jar" depends="compile">
     <mkdir dir="${build.target.directory}/jar/" />
-    <jar destfile="${build.target.directory}/jar/${project.name}-${release.version}.jar">
+    <jar destfile="${build.target.directory}/jar/${project.name}-${ivy.revision}.jar">
       <fileset dir="${build.target.directory}/classes/main/" />
     </jar>
   </target>
@@ -62,7 +62,7 @@
   <target name="release-lib" depends="distribute-lib">
 
     <mkdir dir="${release.target.directory}/archive/" />
-    <zip destfile="${release.target.directory}/archive/${project.name}-${release.version}.zip">
+    <zip destfile="${release.target.directory}/archive/${project.name}-${ivy.revision}.zip">
       <fileset dir="${build.target.directory}/distribution/lib/" />
     </zip>
 
@@ -70,7 +70,7 @@
     <delete failonerror="false" includeemptydirs="true">
       <fileset dir="${release.target.directory}/latest/" />
     </delete>
-    <zip destfile="${release.target.directory}/latest/${project.name}-${release.version}.zip">
+    <zip destfile="${release.target.directory}/latest/${project.name}-${ivy.revision}.zip">
       <fileset dir="${build.target.directory}/distribution/lib/" />
     </zip>
 
@@ -78,21 +78,20 @@
 
   <target name="publish-lib" depends="distribute-lib">
 
-    <mkdir dir="${build.target.directory}/publish/" />
-    <jar destfile="${build.target.directory}/publish/jar-${ivy.module}.jar">
+    <mkdir dir="${build.target.directory}/publish/source/" />
+    <ivy:makepom ivyfile="${project.directory}/ivy.xml" pomfile="${build.target.directory}/publish/source/pom/${ivy.module}.pom"/>
+
+    <jar destfile="${build.target.directory}/publish/source/jar/${ivy.module}.jar">
       <fileset dir="${build.target.directory}/classes/main/" />
     </jar>
 
-    <zip destfile="${build.target.directory}/publish/source-${ivy.module}-sources.jar">
+    <zip destfile="${build.target.directory}/publish/source/source/${ivy.module}-sources.source">
       <fileset dir="${project.directory}/src/main/java/" />
     </zip>
 
-    <property name="publish.version">${release.version}.${build.version}</property>
-
-    <ivy:makepom ivyfile="${project.directory}/ivy.xml" pomfile="${build.target.directory}/publish/pom-${ivy.module}.pom"/>
-    <ivy:publish resolver="local" overwrite="true" pubrevision="${publish.version}">
-      <artifacts pattern="${build.target.directory}/publish/[type]-[artifact].[ext]" />
-      <artifacts pattern="${build.target.directory}/publish/[type]-[artifact](-[classifier]).[ext]" />
+    <property name="publish.revision" value="${ivy.revision}.${build.version}" />
+    <ivy:publish resolver="local" overwrite="true" pubrevision="${publish.revision}">
+      <artifacts pattern="${build.target.directory}/publish/source/[type]/[artifact](-[classifier]).[ext]" />
     </ivy:publish>
 
   </target>
