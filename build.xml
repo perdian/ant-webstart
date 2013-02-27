@@ -6,6 +6,7 @@
   <property name="ivy.local.default.root" value="${build.target.directory}/repository/"/>
 
   <target name="init">
+    <property name="publish.revision" value="${ivy.revision}.${build.version}" />
     <ivy:resolve file="${project.directory}/ivy.xml" log="quiet" />
   </target>
 
@@ -91,7 +92,7 @@
   <target name="release-lib" depends="distribute-lib">
 
     <mkdir dir="${release.target.directory}/archive/" />
-    <zip destfile="${release.target.directory}/archive/${ivy.module}-${ivy.revision}.zip">
+    <zip destfile="${release.target.directory}/archive/${ivy.module}-${publish.revision}.zip">
       <fileset dir="${build.target.directory}/distribution/lib/" />
     </zip>
 
@@ -99,7 +100,7 @@
     <delete failonerror="false" includeemptydirs="true">
       <fileset dir="${release.target.directory}/latest/" />
     </delete>
-    <zip destfile="${release.target.directory}/latest/${ivy.module}-${ivy.revision}.zip">
+    <zip destfile="${release.target.directory}/latest/${ivy.module}-${publish.revision}.zip">
       <fileset dir="${build.target.directory}/distribution/lib/" />
     </zip>
 
@@ -125,7 +126,6 @@
       <fileset dir="${project.directory}/src/main/java/" />
     </zip>
 
-    <property name="publish.revision" value="${ivy.revision}.${build.version}" />
     <ivy:publish resolver="local" overwrite="true" pubrevision="${publish.revision}">
       <artifacts pattern="${build.target.directory}/publish/[type]/[artifact](-[classifier]).[ext]" />
     </ivy:publish>

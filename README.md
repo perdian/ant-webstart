@@ -58,6 +58,28 @@ The latest binary release can be downloaded from:
 
 > http://dev.perdian.de/ant-webstart/releases/latest/
 
+## Maven
+
+The releases are also available from a Maven style repository at:
+
+    <dependency>
+      <groupId>de.perdian.ant</groupId>
+      <artifactId>ant-webstart</artifactId>
+      <version>VERSION</version>
+      <type>pom</type>
+    </dependency>
+
+Replace version with the latest revision, which you can find at
+> http://dev.perdian.de/ant-webstart/releases/latest/
+
+The repository itself is located at:
+
+    <repository>
+      <id>perdian</id>
+      <name>perdian</name>
+      <url>http://dev.perdian.de/artifactory/perdian</url>
+    </repository>
+
 ## Build
 
 If you want to build the application yourself, all you have to do once you've
