@@ -125,8 +125,8 @@
       <fileset dir="${project.directory}/src/main/java/" />
     </zip>
 
-    <property name="publish.revision" value="${ivy.revision}.${publish.buildnumber}" />
-    <ivy:publish resolver="local" overwrite="true" pubrevision="${build.version}">
+    <property name="publish.revision" value="${ivy.revision}.${build.version}" />
+    <ivy:publish resolver="local" overwrite="true" pubrevision="${publish.revision}">
       <artifacts pattern="${build.target.directory}/publish/[type]/[artifact](-[classifier]).[ext]" />
     </ivy:publish>
 
