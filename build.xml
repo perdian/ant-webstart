@@ -6,8 +6,8 @@
   <property name="ivy.local.default.root" value="${build.target.directory}/repository/"/>
 
   <target name="init">
-    <property name="publish.revision" value="${ivy.revision}.${build.version}" />
     <ivy:resolve file="${project.directory}/ivy.xml" log="quiet" />
+    <property name="publish.revision" value="${ivy.revision}.${build.version}" />
   </target>
 
   <target name="clean">
