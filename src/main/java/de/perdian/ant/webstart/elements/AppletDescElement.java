@@ -15,6 +15,7 @@
  */
 package de.perdian.ant.webstart.elements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Element;
@@ -28,7 +29,7 @@ public class AppletDescElement implements ConfigurationElement {
   private String myMainclass = null;
   private Integer myWidth = null;
   private Integer myHeight = null;
-  private List<ParamElement> myParam = null;
+  private List<ParamElement> myParam = new ArrayList<ParamElement>();
 
   @Override
   public void appendXml(JnlpTask task, Element parentElement) {
