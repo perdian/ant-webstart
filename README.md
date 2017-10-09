@@ -52,34 +52,6 @@ the <code>destfile</code> attribute of the main task element).
 
 The ant-webstart tasks requires Java SE 6 or higher.
 
-## Download
-
-The latest binary release can be downloaded from:
-
-> http://dev.perdian.de/ant-webstart/releases/latest/
-
-## Maven
-
-The releases are also available from a Maven style repository using this dependency:
-
-    <dependency>
-      <groupId>de.perdian.ant</groupId>
-      <artifactId>ant-webstart</artifactId>
-      <version>VERSION</version>
-      <type>pom</type>
-    </dependency>
-
-Replace version with the latest revision, which you can find at
-> http://dev.perdian.de/ant-webstart/releases/latest/
-
-The repository itself is located at:
-
-    <repository>
-      <id>perdian</id>
-      <name>perdian</name>
-      <url>http://dev.perdian.de/artifactory/perdian</url>
-    </repository>
-
 ## Build
 
 If you want to build the application yourself, all you have to do once you've
@@ -90,7 +62,7 @@ cloned the Git repository is to call the Ant buildscript:
 
 Please note, that since the project uses Apache Ivy as dependency management
 system, your Ant installation must also have the Apache Ivy JAR-File in it's
-classpath. For furhter information about Apache Ivy see: https://ant.apache.org/ivy/history/latest-milestone/install.html
+classpath. For further information about Apache Ivy see: https://ant.apache.org/ivy/history/latest-milestone/install.html
 
 Once the build is completed, the JAR file containing the tasks can be found in
 the <code>distribution/lib</code> subdirectory.
